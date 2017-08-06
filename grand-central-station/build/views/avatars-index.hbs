@@ -1,0 +1,82 @@
+<div id="main-intro" class="text-center">
+
+	<h1><i class="fa fa-twitter"></i> Avatars</h1>
+
+	<!--Accordion Interface-->
+	<div class="panel-group" id="avatar-accordion">
+
+		{{#each avatars}}
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a href="/avatars/{{ this.name }}">
+							<span class="">{{ this.name }}</span>
+							&nbsp;
+							&nbsp;
+							&nbsp;
+							<span class="button"><label>Enabled&nbsp; <input data-avatar="{{ this.name }}" type="checkbox" class="running-status" {{renderRunningStatus this.running}}></label></span>
+							<span class="status-bar btn btn-default">Status: <span data-avatar="{{ this.name }}" class="badge"><i class="fa fa-spinner fa-spin"></i> Checking...</span></span>
+						</a>
+					</h4>
+				</div><!--/panel-heading-->
+			</div><!--/panel-->
+
+		{{/each}}
+
+	</div><!--/panel-group #accordion-->
+</div><!--/main-intro-->
+
+<script>
+$(document).ready(function(){
+
+   $('.running-status').change(function(){
+      debugger;
+   		$.ajax({
+   			url: "{{ gcs_api_root }}/avatars/control",
+   			method: 'POST',
+   			data: { avatar: $(this).data('avatar'), command: $(this).is(':checked') },
+   			beforeSend: function(request) {
+   				request.setRequestHeader('Authorization', 'Basic ' + btoa("{{username}}" + ':' + "{{password}}"))
+   			},
+   			success: function(data) {
+   				console.log('modify running status success: ')
+   				console.dir(data)
+   			},
+   			error: function(error) {
+   				console.log('modify-running-status error: ')
+   				console.dir(error);
+   			}
+   		})
+   })
+
+   var running_html = '<span class="fa-stack fa-lg"><i class="fa fa-cog fa-stack-2x fa-4x fa-spin running-avatar-check"></i><i class="fa fa-twitter fa-stack-1x fa-lg"></i></span>  Running';
+
+   var paused_html = '<span class="fa-stack fa-lg"><i class="fa fa-cog fa-stack-2x fa-4x paused-avatar-check"></i><i class="fa fa-twitter fa-stack-1x fa-lg"></i></span>  Paused';
+
+   	//All avatars start out paused until API reports otherwise
+   	$('span.badge').each(function( i , e ){
+   		$(e).html(paused_html);
+   	});
+
+	//Fetch running avatars from GCS API
+	$.ajax({
+		url: "{{ gcs_api_root }}/running-avatars",
+		method: 'GET',
+		beforeSend: function(request) {
+			request.setRequestHeader('Authorization', 'Basic ' + btoa("{{username}}" + ':' + "{{password}}"))
+		},
+		success: function(data) {
+			//Update the avatar status:
+			for (key in data) {
+				var avatar = data[key];
+				$('span[data-avatar="' + avatar + '"]')
+					.html(running_html);
+			}
+		},
+		error: function(error) {
+			console.error('get running avatars error:');
+			console.dir(error);
+		}
+	});
+});
+</script>

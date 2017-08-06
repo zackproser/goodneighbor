@@ -1,0 +1,16 @@
+<div id="main-intro">
+
+	<h1><i class="fa fa-cubes"></i> Create a New Avatar</h1>
+	<div class="form-group">
+		{{#each avatar.config}}
+			<p class="page-header">{{@key}}</p>
+			<div data-parentobject="{{@key}}">
+				{{#each this}}
+					<div class="form-group">
+						<span class="label label-success">{{@key}}</span>
+							{{ handleArrayOrTextNewAvatar this }}
+					</div>
+				{{/each}}
+		{{/each}}
+	</div>
+</div><!--/main-intro-->

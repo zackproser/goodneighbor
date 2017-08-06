@@ -1,0 +1,1 @@
+{ "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "name" : "_id_", "ns" : "clouddev2455.advertised_items" }, { "v" : 1, "unique" : true, "key" : { "asin" : 1 }, "name" : "asin_1", "ns" : "clouddev2455.advertised_items", "dropDups" : true } ] }

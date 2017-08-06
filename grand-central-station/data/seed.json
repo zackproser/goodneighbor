@@ -1,0 +1,82 @@
+{
+    "bot": {
+
+        "name": ""
+    },
+    "bitly": {
+        "user": "", 
+        "key": ""
+    }, 
+    "twitter": {
+        "tracking_name": [],
+        "consumer_key": "",
+        "consumer_secret": "",
+        "access_token": "",
+        "access_token_secret": "",
+        "users_to_ignore": [],
+        "target_hashtags": [],
+        "retweet_disqualifiers": [],
+        "retweet_thank_yous": [],
+        "youre_welcomes": []
+    },
+
+    "mongo": {
+        "host": "127.0.0.1",
+        "port": 27017
+    },
+
+    "scraper": {
+        "feeds": []
+    },
+    "aws": {
+
+        "awsId": "",
+        "awsSecret": "",
+        "assocId": "", 
+        "searchIndex": "All",
+        "product_keywords": []
+    },
+    "timers": {
+
+        "retweetTimer": {
+            "min": 15,
+            "max": 35
+        },
+        "thankYouTimer": {
+            "min": 5, 
+            "max": 10    
+        }, 
+        "checkThankYouTimer": {
+            "min": 35, 
+            "max": 45
+        },
+        "pruneInterval": {
+            "min": 5,
+            "max": 25
+        },
+        "followInterval": {
+            "min": 5, 
+            "max": 25
+        }, 
+        "favoriteTimer": {
+            "min": 20,
+            "max": 35
+        },
+        "scrapeInterval": {
+            "min": 1,
+            "max": 3
+        },
+        "tweetInterval": {
+            "min": 25,
+            "max": 40
+        }, 
+        "productResearchInterval": {
+            "min": 5, 
+            "max": 15
+        }, 
+        "advertisementInterval": {
+            "min": 30, 
+            "max": 95
+        }
+    }
+}

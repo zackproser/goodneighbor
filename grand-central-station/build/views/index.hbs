@@ -1,0 +1,40 @@
+<div id="main-intro" class="text-center">
+	
+	<h1><i class="fa fa-database"></i> Hivemind Interface</h1>
+
+	<h2>Manage Configuration</h2>
+
+	<!--Accordion Interface-->
+	<div class="panel-group" id="accordion">
+		{{#each sections_to_render}}
+	
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion" href="#{{ this.name }}">{{ this.name }}
+						</a>
+					</h4>
+				</div><!--/panel-heading-->
+				<div id="{{ this.name }}" data-route="{{ this.name }}" class="panel-collapse collapse">
+					<div class="panel-body">
+						<div class="alert alert-success hide"></div>
+						<div class="well">
+							{{#each this.data}}
+								<a href="#" class="btn btn-default"><i class="fa fa-close"></i> {{ this }}</a>
+							{{/each}}
+						</div>
+						<br>
+						<div class="form-group">
+							<input id="#{{ this.name }}" type="text" class="form-control" /> 
+							<br>
+							<a href="#submit" class="btn btn-success submit-button" data-route="{{ this.name }}">Add</a>
+						</div>
+					</div><!--/panel-body-->
+				</div><!--/specific iterated panel-->
+			</div><!--/panel-->
+
+		{{/each}}
+
+	</div><!--/panel-group #accordion-->
+
+</div><!--/main-intro-->

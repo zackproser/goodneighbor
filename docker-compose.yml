@@ -1,0 +1,10 @@
+version: '2'
+services:
+  grand-central-station:
+    build: .
+    ports:
+     - "3100:3100"
+    depends_on:
+     - goodneighbor-db
+  goodneighbor-db:
+    build: ./db-seeder

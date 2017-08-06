@@ -1,0 +1,246 @@
+const milToMinConversion = 60000;
+
+/*
+ * After the burning there is only the burning and after the burning there is only the burning...
+ *
+ * Handles scheduling and randomization for all avatar behaviors
+ */
+class Ambition {
+
+    constructor() {
+        this.init();
+    }
+
+    init() {
+        //Create a reference to the startup time
+        this.startup_time = new Date().getTime()
+
+        //Configure schedule object
+        this.scheduled = {
+            commandContentRichTweet: null,
+            commandScrape: null,
+            commandAdvertisingResearch: null,
+            commandAdvertisingTweet: null,
+            commandPrune: null,
+            commandCheckForRetweeters: null,
+            commandCheckForThankYouTweets: null,
+            commandYoureWelcomeTweet: null,
+            commandUpdateWelcomedUsers: null,
+            commandRetweet: null,
+            commandFavorite: null,
+            commandFollow: null
+        };
+
+        //Configure time tracking actions
+        this.actions = {};
+        this.actions.commandContentRichTweet = this.startup_time
+        this.actions.commandScrape = this.startup_time
+        this.actions.commandAdvertisingResearch = this.startup_time
+        this.actions.commandAdvertisingTweet = this.startup_time
+        this.actions.commandPrune = this.startup_time
+        this.actions.commandCheckForRetweeters = this.startup_time
+        this.actions.commandCheckForThankYouTweets = this.startup_time
+        this.actions.commandYoureWelcomeTweet = this.startup_time
+        this.actions.commandUpdateWelcomedUsers = this.startup_time
+        this.actions.commandRetweet = this.startup_time
+        this.actions.commandFavorite = this.startup_time
+        this.actions.commandFollow = this.startup_time
+
+        //Set up mapping of command names to associated timer names
+        this.timerNames = {
+            commandContentRichTweet: 'tweetInterval',
+            commandScrape: 'scrapeInterval',
+            commandAdvertisingResearch: 'productResearchInterval',
+            commandAdvertisingTweet: 'advertisementInterval',
+            commandPrune: 'pruneInterval',
+            commandCheckForRetweeters: 'thankYouTimer',
+            commandCheckForThankYouTweets: 'checkThankYouTimer',
+            commandRetweet: 'retweetTimer',
+            commandFavorite: 'favoriteTimer',
+            commandFollow: 'followInterval',
+        }
+
+        this.sendCommand('commandScrape')
+
+        /**
+         * Register event listener for Conviviality-sent request for "You're Welcome" tweet approval
+         */
+        app.get('channel').on('seekApprovalForYoureWelcomeTweets', ((thank_you_tweets) => {
+            /**
+             * Loop through thank yous and assign each youreWelcome tweet to semi-random window
+             */
+            thank_you_tweets.forEach((tweet) => {
+                let timeWindow = this.getRandomMillisecondsBetweenRangeOfMinutes(1, 2)
+                app.get('logger').info('TimeManager assigning youre welcome tweet: ' + tweet + ' for ' + timeWindow / milToMinConversion + ' minutes')
+
+                setTimeout(() => {
+                    app.get('channel').emit('commandYoureWelcomeTweet', tweet)
+                    this.actions.commandYoureWelcomeTweet = new Date().getTime()
+                }, timeWindow)
+            })
+        }))
+
+        /**
+         * Schedule initial actions - start main bot event loop
+         */
+        this.scheduleInitials()
+    }
+
+    /**
+     * Schedule initial actions on startup according to their timer settings
+     *
+     * @return {Void}
+     */
+    scheduleInitials() {
+        this.scheduleCommand('commandContentRichTweet');
+        this.scheduleCommand('commandScrape');
+        this.scheduleCommand('commandAdvertisingResearch');
+        this.scheduleCommand('commandAdvertisingTweet');
+        this.scheduleCommand('commandPrune');
+        this.scheduleCommand('commandCheckForRetweeters');
+        this.scheduleCommand('commandCheckForThankYouTweets');
+        this.scheduleCommand('commandRetweet');
+        this.scheduleCommand('commandFollow');
+        this.scheduleCommand('commandFavorite');
+    }
+
+    /**
+     * Converts milliseconds to minutes
+     *
+     * @param  {Number} milliseconds
+     * @return {Number} minutes
+     */
+    millisecondsToMinutes(milliseconds) {
+        return (milliseconds / milToMinConversion);
+    }
+
+    /**
+     * Converts minutes to milliseconds
+     *
+     * @param  {Number} minutes
+     * @return {Number} milliseconds
+     */
+    minutesToMilliseconds(minutes) {
+        return (minutes * milToMinConversion);
+    }
+
+    /**
+     * Get the minimum timer property for the given command
+     *
+     * @param  {String} commandName The command to get the min value for
+     * @return {Number} minutes The number of minutes represented by the min value
+     */
+    getCommandMin(commandName) {
+        let timerName = this.mapCommandToTimerName(commandName);
+        return app.get('settings').timers[timerName].min;
+    }
+
+    /**
+     * Get the maximum timer property for the given command
+     *
+     * @param  {String} commandName The command to get the max value for
+     * @return {Number} minutes The number of minutes represented by the max value
+     */
+    getCommandMax(commandName) {
+        let timerName = this.mapCommandToTimerName(commandName);
+        return app.get('settings').timers[timerName].max;
+    }
+
+    /**
+     * Returns a randomized time that is within the range of the min and max minute arguments
+     * Used for generating semi-random time windows
+     * Consumed by scheduling functions
+     *
+     * @param  {number} min - A whole number representing the soonest possible time to take an action in minutes
+     * @param  {number} max - A whole number representing the latest possible time to take an action in minutes
+     * @return {number} randomMilliseconds - number of milliseconds representing minutes between the range
+     */
+    getRandomMillisecondsBetweenRangeOfMinutes(min, max) {
+        //Prevents bug where some numbers are strings and get concatenated instead of added
+        var min = parseInt(min, 10);
+        var max = parseInt(max, 10);
+        return (Math.floor(Math.random() * (max - min + 1) + min)) * milToMinConversion;
+    }
+
+    /**
+     * Converts a command name to its associated timerName
+     *
+     * @param  {String} commandName the name of the command
+     *
+     * @return {String} the associated timer name
+     */
+    mapCommandToTimerName(commandName) {
+        let ret = this.timerNames[commandName];
+        if (typeof ret == "undefined") console.error('Bad timer name passed to mapCommandToTimerName') && process.exit(1);
+        return ret;
+    }
+
+    /**
+     * Schedule the next occurrence of the supplied command
+     *
+     * @param  {String} commandName The command to schedule
+     * @return {Void}
+     */
+    scheduleCommand(commandName) {
+        if (this.scheduled[commandName] != null) {
+            if (!this.scheduled[commandName]._idleNext === null) return;
+        }
+        let min = this.getCommandMin(commandName);
+        let max = this.getCommandMax(commandName);
+        let millisecondsToSchedule = this.getRandomMillisecondsBetweenRangeOfMinutes(min, max);
+        app.get('logger').info('scheduleCommand for ' + app.get('settings').bot.name + ' scheduling ' + commandName + ' for ' + millisecondsToSchedule + ' milliseconds from now');
+        this.scheduled[commandName] = setTimeout(() => {
+            //Prevent dupes from being scheduled on top of each other
+            this.updateActionLastExecutionTime(commandName, () => {
+                this.sendCommand(commandName);
+            });
+        }, millisecondsToSchedule);
+    }
+
+    /**
+     * Update the last completed time for the supplied command
+     *
+     * @param  {String}   commandName The command whose last completed time will be updated
+     * @param  {Function} done        Callback function
+     * @return {Void}
+     */
+    updateActionLastExecutionTime(commandName, done) {
+        this.actions[commandName] = new Date().getTime();
+        done();
+    }
+
+    /**
+     * Send the supplied command on the app-wide messaging channel
+     *
+     * Next, schedule its next occurrence according to timers settings
+     *
+     * @param  {String} commandName The command to send
+     * @return {Void}
+     */
+    sendCommand(commandName) {
+        app.get('logger').info('sendCommand for ' + app.get('settings').bot.name + ' sending command:  ' + commandName);
+        app.get('channel').emit(commandName);
+        this.scheduleCommand(commandName);
+    }
+
+    /**
+     * Checks if given command can be run or if it needs more time
+     *
+     * @param  {String}   commandName The command whose status will be checked
+     * @param  {Function} callback    Callback function
+     * @return {Void}
+     */
+    checkEnoughTimeHasElapsedSinceLast(commandName, callback) {
+        let lastAction = this.actions[commandName];
+        let timerName = this.mapCommandToTimerName(commandName);
+        let now = new Date().getTime();
+        let difference = (now - lastAction);
+        app.get('logger').info('enoughTimeHasElapsedSinceLast ' + app.get('settings').bot.name + ' difference is ' + difference);
+        app.get('logger').info('enoughTimeHasElapsedSinceLast checking timer min: ' + app.get('settings').timers[timerName].min);
+        let ret = (difference > minutesToMilliseconds(app.get('settings').timers[timerName].min));
+        app.get('logger').info('enoughTimeHasElapsedSinceLast ' + app.get('settings').bot.name + ' returning ' + ret);
+        callback(ret);
+    }
+}
+
+module.exports = Ambition;

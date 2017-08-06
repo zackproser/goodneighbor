@@ -1,0 +1,1 @@
+{ "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "name" : "_id_", "ns" : "gregbot.pulled_articles" }, { "v" : 1, "unique" : true, "key" : { "original_link" : 1 }, "name" : "original_link_1", "ns" : "gregbot.pulled_articles", "dropDups" : true } ] }

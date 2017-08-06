@@ -1,0 +1,31 @@
+{
+  "name": "Goodneighbor",
+  "version": "1.0.0",
+  "description": "Twitter AI Platform",
+  "main": "test.js",
+  "dependencies": {
+    "apac": "^1.0.0",
+    "async": "^0.9.0",
+    "bitly": "~1.2.4",
+    "colors": "^0.6.2",
+    "cookies": "^0.5.1",
+    "express": "^4.12.2",
+    "feedparser": "2.2.0",
+    "keygrip": "^1.0.1",
+    "log4js": "*",
+    "mongodb": "2.2.26",
+    "mongoose": "~3.8.3",
+    "oauth": "^0.9.12",
+    "request": "^2.67.0",
+    "rollbar": "^2.0.1",
+    "twit": "*",
+    "twitter": "^0.2.13",
+    "utf8": "^2.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Zack Proser",
+  "license": "BSD-2-Clause"
+}

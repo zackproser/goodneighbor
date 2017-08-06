@@ -1,0 +1,90 @@
+@media all and (max-width: 768px) {
+	body {
+		margin-top: 30%; 
+	}
+} 
+
+@media all and (max-width: 640px) {
+	body {
+		margin-top: 50%; 
+	}
+}
+
+ul.config-list {
+	list-style: none;
+	margin-top: 8px;
+	margin-left: -20px;
+}
+
+input.add-new-avatar-item {
+	margin-top: 10px;b
+	max-width: 200px;
+}
+
+input.timer-input {
+	max-width: 100px;
+}
+
+a.avatar-add-item-button {
+	margin-top: 10px;
+}
+
+.new-avatar-button {
+	color: #fff !important;
+}
+
+hr.section-end {
+	color: #000;
+}
+
+.save-status i {
+	font-weight: bold;
+	color: #ffc718;
+}
+
+.saving, .saving:focus {
+	outline: none; 
+	border-color: #ffc718;
+	box-shadow: 0 0 10px #ffc718;
+}
+
+.save-status.confirmed i {
+	color: #17b73d;
+}
+
+.saved, .saved:focus {
+	border-color: #17b73d;
+	box-shadow: 0 0 10px #17b73d;
+}
+
+.save-error, .save-error:focus {
+	border-color: #ff2b21;
+	box-shadow: 0 0 10px #ff2b21;
+}
+
+/* Avatars Index */
+
+.status-bar {
+	margin-left: 8em;
+}
+
+.running-avatar-check {
+	color: #00a345;
+}
+
+.paused-avatar-check {
+	color: #ec840a;
+}
+
+div.avatar-header {
+	
+	display: inline-block;
+}
+
+.offline {
+	color: red;
+}
+
+.online {
+	color: green;
+}

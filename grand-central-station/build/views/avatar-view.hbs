@@ -1,0 +1,151 @@
+<div id="main-intro">
+
+	<div class="avatar-header">
+
+		<h1><i class="fa fa-cubes"></i> {{ avatar.name }}</h1>
+		<span class="avatar-status btn btn-default">Status:
+			<span data-avatar="{{ this.name }}" class="badge">
+				<i class="fa fa-spinner fa-spin"></i>
+				Checking...
+			</span>
+		</span>
+
+	</div>
+
+		<div class="panel-group" id="config-accordion-group" role="tablist" aria-multiselectable="true">
+			{{#each avatar.config}}
+				<div class="panel panel-default">
+					<div class="panel-heading" role="tab" id="heading-{{@key}}">
+						<h4 class="panel-title">
+							<a role="button" data-toggle="collapse" data-parent="#config-accordion-group" href="#collapse-{{@key}}" aria-expanded="false" aria-controls="collapse-{{@key}}">
+								{{@key}}
+							</a>
+						</h4>
+					</div>
+					<div id="collapse-{{@key}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading-{{@key}}">
+						<div class="panel-body">
+							<div data-parentobject="{{@key}}">
+								{{#each this}}
+									<div class="form-group">
+										<span class="label label-success">{{@key}}</span>
+											{{ handleArrayOrText this }}
+									</div>
+								{{/each}}
+							</div>
+						</div>
+					</div>
+				</div>
+			{{/each}}
+		</div>
+</div><!--/main-intro-->
+
+<script>
+ var running_html = '<span class="fa-stack fa-lg"><i class="fa fa-cog fa-stack-2x fa-4x fa-spin running-avatar-check"></i><i class="fa fa-twitter fa-stack-1x fa-lg"></i></span>  Running';
+
+ var paused_html = '<span class="fa-stack fa-lg"><i class="fa fa-cog fa-stack-2x fa-4x paused-avatar-check"></i><i class="fa fa-twitter fa-stack-1x fa-lg"></i></span>  Paused';
+
+ var pause_button_html = '   <a href="#" class="btn btn-warning pause-avatar-button" onclick="pauseRequest();">' + " Pause {{ avatar.name }}" + '</a>';
+
+ var start_button_html = '   <a href="#" class="btn btn-success start-avatar-button" onclick="startRequest();">' + " Start {{ avatar.name }}" + '</a>';
+
+ var pauseRequest = function(){
+
+	if(confirm('Are You Sure You Want to Stop ' + "{{ avatar.name }}" + '?')){
+
+		$.ajax({
+			url: "{{ gcs_api_root }}/avatars/control",
+			method: "POST",
+			data: { avatar: "{{ avatar.name }}", command: "false" },
+			beforeSend: function(request) {
+				request.setRequestHeader('Authorization', "Basic {{ gcs_api_key }}");
+			},
+			success: function(data){
+				console.log('pauseRequest ajax success: ');
+				console.dir(data);
+				if ("paused" == data.status) {
+					//Avatar was paused, update UI
+					$('.badge').html(paused_html);
+					$('.pause-avatar-button').remove();
+					$('.avatar-status').after(start_button_html);
+				}
+			},
+			error: function(error){
+				console.log('pauseRequest ajax error: ');
+				console.dir(error);
+			}
+		});
+
+	} else {
+
+		return;
+	}
+}
+
+var startRequest = function(){
+
+	if(confirm('Are You Sure You Want to Start ' + "{{ avatar.name }}" + '?')){
+
+		$.ajax({
+			url: "{{ gcs_api_root }}" + '/avatars/control',
+			method: "POST",
+			data: { avatar: "{{ avatar.name }}", command: "true" },
+			beforeSend: function(request) {
+			request.setRequestHeader('Authorization', "Basic {{ gcs_api_key }}");
+			},
+			success: function(data){
+				console.log('startRequest ajax success: ');
+				console.dir(data);
+				if ("started" == data.status) {
+					//Avatar was paused, update UI
+					$('.badge').html(running_html);
+					$('.start-avatar-button').remove();
+					$('.avatar-status').after(pause_button_html);
+				}
+			},
+			error: function(error){
+				console.log('pauseRequest ajax error: ');
+				console.dir(error);
+			}
+		});
+
+	} else {
+
+		return;
+	}
+}
+
+
+
+$(document).ready(function(){
+	//Start accordion menu collapsed:
+	$('.collapse').collapse("hide");
+
+	//Fetch running avatars from GCS API
+	$.ajax({
+		url: "{{ gcs_api_root }}/avatars/status/{{ avatar.name }}",
+		method: 'GET',
+		beforeSend: function(request) {
+			request.setRequestHeader('Authorization', "Basic {{ gcs_api_key }}");
+		},
+		success: function(data) {
+			console.log('get avatar status success:');
+			console.dir(data);
+
+			//Update the avatar status:
+			if (true === data.running) {
+				$('.badge').html(running_html);
+				$('.avatar-status').after(pause_button_html);
+
+			} else {
+				$('.badge').html(paused_html);
+				$('.avatar-status').after(start_button_html);
+			}
+		},
+		error: function(error) {
+			console.error('get running avatars error:');
+			console.dir(error);
+		}
+	});
+
+});
+</script>

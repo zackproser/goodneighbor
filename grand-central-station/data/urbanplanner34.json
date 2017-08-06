@@ -1,0 +1,122 @@
+{
+    "bot": {
+
+        "name": "gregbot"
+    },
+    "bitly": {
+        "user": "zackproser",
+        "key": "R_254f953fbsdvwebt628f6df49ac25e5"
+    },
+    "twitter": {
+        "tracking_name": ["architecture", "greencities", "urban", "planning", "cityreads", "smartcities", "greentech", "urbaninnovation", "urbanstudies", "economicdevelopment", "community"],
+        "consumer_key": "ZF6yXPdfvebgw9xzZHdvbOLaF",
+        "consumer_secret": "PYK2ETaAnfevdvdU8u1OxPL4hdtaMFeO26bmoXD3ibR4",
+        "access_token": "3109417369-zg18MpEfebgTKZ6PI4YcrvtMKlggPbQz8SI",
+        "access_token_secret": "625NYPjaTUFlASuulfvebc0MRJfDmN5PK8yzHFvc",
+        "users_to_ignore": [
+            "balabart",
+            "anotherjerk",
+            "shitfuckmcgee"
+        ],
+        "target_hashtags": ["urban", "greencities", "cityreads", "greentech", "innovation", "city", "architecture", "urbanstudies"],
+        "retweet_disqualifiers": ["sex", "$", "£", "buy", "free", "cheap", "best", "webinar", "coupon", "offer", "bot", "backlink", "sale", "special", "nigga", "dick", "pussy", "cock", "penis", "cum", "jiz"],
+        "retweet_thank_yous": ["Thanks a lot!", "Thank you"],
+        "youre_welcomes": ["NP!", "Np :)", "Anytime", "You got it!", "Sure thing!"]
+    },
+
+    "mongo": {
+        "host": "127.0.0.1",
+        "port": 27017
+    },
+
+    "scraper": {
+        "feeds": [
+            "http://www.planetizen.com/frontpage/feed",
+            "http://www.globalsiteplans.com/feed/",
+            "http://thedailypothole.tumblr.com/rss",
+            "http://dirt.asla.org/feed/",
+            "http://urbanomnibus.net/feed/",
+            "http://feeds2.feedburner.com/Newgeography",
+            "http://blog.cubitplanning.com/feed/",
+            "http://www.cnt.org/feed/",
+            "http://streetsblog.net/feed/",
+            "http://grist.org/feed/",
+            "http://www.pbs.org/wnet/blueprintamerica/category/blogs/feed/",
+            "http://www.thetransportpolitic.com/feed/",
+            "http://spacing.ca/toronto/feed/",
+            "http://www.digitalurban.org/feed",
+            "http://feeds.feedburner.com/weburbanist",
+            "http://feeds.feedburner.com/thecityfix/posts",
+            "http://rethinkcollegepark.net/blog/feed/",
+            "http://feeds.feedburner.com/designobserver",
+            "http://bldgblog.blogspot.co.uk/feeds/posts/default",
+            "http://feeds.feedburner.com/contemporist",
+            "http://feeds.feedburner.com/Eikongraphia",
+            "http://feeds.feedburner.com/archidose",
+            "http://unhappyhipsters.com/rss",
+            "http://architectureblog.tumblr.com/rss",
+            "http://urbanplanningblog.com/feed/",
+            "http://feeds.feedburner.com/Austincontrarian",
+            "http://feeds.feedburner.com/city-journal",
+            "http://ownyourcity.ca/feed/"
+        ]
+    },
+    "aws": {
+
+        "awsId": "AKIAIBJdvb6XWHVPQ",
+        "awsSecret": "Y6aA/knUFpJvrbPlg2/63gnWh2PKLS8RND+9j",
+        "assocId": "gregbot-urbanplanning-20",
+        "searchIndex": "All",
+        "product_keywords": ["urban planning", "economic development", "community", "community planning", "architecture", "green building", "innovation"]
+    },
+
+    "util": {
+
+        "bitly_user": "zackproser",
+        "bitly_key": "R_254f95scvfbdrvbghj49ac25e5"
+    },
+
+    "timers": {
+
+        "retweetTimer": {
+            "min": 25,
+            "max": 50
+        },
+        "thankYouTimer": {
+            "min": 5,
+            "max": 25
+        },
+        "checkThankYouTimer": {
+            "min": 25,
+            "max": 55
+        },
+        "pruneInterval": {
+            "min": 20,
+            "max": 35
+        },
+        "followInterval": {
+            "min": 35,
+            "max": 55
+        },
+        "favoriteTimer": {
+            "min": 35,
+            "max": 55
+        },
+        "scrapeInterval": {
+            "min": 1,
+            "max": 3
+        },
+        "tweetInterval": {
+            "min": 35,
+            "max": 50
+        },
+        "productResearchInterval": {
+            "min": 25,
+            "max": 45
+        },
+        "advertisementInterval": {
+            "min": 90,
+            "max": 180
+        }
+    }
+}

@@ -1,0 +1,109 @@
+{
+    "bot": {
+
+        "name": "fashiongerry"
+    },
+    "bitly": {
+        "user": "zackproser",
+        "key": "R_254f95zvbt5db628f683349ac25e5"
+    },
+    "twitter": {
+        "tracking_name": ["fashion", "mensfashion", "menswear", "mensstyle", "lifestyle", "clothes", "topfash", "beauty"],
+        "consumer_key": "NHfpctrElDdavsbfeCZ5LUkksp",
+        "consumer_secret": "29X5tmewIzvyC0HaGZKB0uVGLU5uuF3MyOFUGjLEZQPXAX",
+        "access_token": "3119025013-rPuJ9OzcvblWBZutaW2enLNNBMJvbBF2JvWYC",
+        "access_token_secret": "QVMthNt7fgNmzvcNTyo2CalXJaVK1FYt0dBSbOmP",
+        "users_to_ignore": [
+            "balabart",
+            "another jerk",
+            "shitfuck mcgee"
+        ],
+        "target_hashtags": ["fashion", "mensfashion", "menswear", "mensstyle", "lifestyle", "clothes", "style"],
+        "retweet_disqualifiers": ["sex", "$", "£", "buy", "free", "cheap", "best", "webinar", "coupon", "offer", "bot", "backlink", "sale", "special", "nigga", "dick", "pussy", "cock", "penis", "blowjob", "anal", "porn"],
+        "retweet_thank_yous": ["Thanks for your support!", "Thank you for retweeting", "Thx for rting!", "THX Retweeters", "Much appreciated!", "Thx for helping out!"],
+        "youre_welcomes": ["NP", "Np", "Anytime", "You got it", "Sure thing", "yw", "YW", "no problem", "happy to help", "you know it", "no prob", "Sure", "Anytime"]
+    },
+
+    "mongo": {
+        "host": "127.0.0.1",
+        "port": 27017
+    },
+
+    "scraper": {
+        "feeds": [
+            "http://www.gq.com/services/rss/feeds/latest.xml",
+            "http://www.gq.com/services/rss/feeds/styleguy.xml",
+            "http://www.gq.com/services/rss/feeds/women.xml",
+            "http://www.gq.com/services/rss/feeds/howto.xml",
+            "http://www.gq.com/style/blogs/the-gq-eye/rss.xml",
+            "http://www.anothermag.com/feed",
+            "http://www.7thmanmagazine.com/feed/",
+            "http://www.essential-homme.com/feed/",
+            "http://therakeonline.com/feed/",
+            "http://thehoundstoothblog.com/feed/",
+            "http://www.modernfellows.com/feed/",
+            "http://hespokestyle.com/feed/",
+            "http://offthecuffdc.com/feed",
+            "http://www.contemporarystandard.com/feed/",
+            "http://thehundreds.com/feed/",
+            "http://feeds.feedburner.com/acontinuouslean/",
+            "http://putthison.com/rss",
+            "http://feeds.feedburner.com/Upscalehype",
+            "http://www.gilt.com/giltmanual/feed/"
+        ]
+    },
+    "aws": {
+
+        "awsId": "AKIAIBJHsdv6XWHVPQ",
+        "awsSecret": "Y6aA/knUFpJ78dfRPlg2/63gnWh2PKLS8RND+9j",
+        "assocId": "fashiongerry-20",
+        "searchIndex": "All",
+        "product_keywords": ["mens fashion", "mens clothing", "mens luxury", "mens watches", "mens shoes", "mens sportscoats", "mens wallets", "mens belts"]
+    },
+
+
+
+    "timers": {
+
+        "retweetTimer": {
+            "min": 35,
+            "max": 45
+        },
+        "thankYouTimer": {
+            "min": 35,
+            "max": 55
+        },
+        "checkThankYouTimer": {
+            "min": 35,
+            "max": 55
+        },
+        "pruneInterval": {
+            "min": 5,
+            "max": 25
+        },
+        "followInterval": {
+            "min": 25,
+            "max": 45
+        },
+        "favoriteTimer": {
+            "min": 35,
+            "max": 55
+        },
+        "scrapeInterval": {
+            "min": 1,
+            "max": 3
+        },
+        "tweetInterval": {
+            "min": 35,
+            "max": 55
+        },
+        "productResearchInterval": {
+            "min": 5,
+            "max": 15
+        },
+        "advertisementInterval": {
+            "min": 30,
+            "max": 95
+        }
+    }
+}

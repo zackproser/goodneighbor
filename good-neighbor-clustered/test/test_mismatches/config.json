@@ -1,0 +1,51 @@
+{
+	"bot": {
+		
+		"name":  "lightseeker" 
+	}, 
+
+	"twitter": {
+    	"tracking_name": 4567,
+    	"consumer_key": "AWzLULoKTNSq7gQxSrUg",
+    	"consumer_secret": "nh6N8aB1KgVG2g9ESryww9xhWhWT8bv9avC0SEio",
+    	"access_token": "2264570606-Jx2KqKlmObiZaihpFNu8eFZ9Yv4RmIt0riac0jD",
+    	"access_token_secret": "XGycoEBqVzyqCMmvBtoXW88Hhl0cyRVBRBlWtPLhM46L9",
+    	"users_to_ignore": [
+      		"one guy",
+      		"another jerk",
+      		"shitfuck mcgee"
+    		]
+  	},
+
+	"mongo": {
+		"host": "127.0.0.1",
+		"port": 27017 
+	}, 
+
+	"scraper": {
+		"feeds": [
+			"http://www.nytimes.com",
+			"http://www.cnn.com"
+			]
+	},
+
+	"aws": {
+
+		"awsId": 3456,
+		"awsSecret": "2I/HpT6tze4AA5pp/ipHzzci7+JMvn3GHghfjmWf",
+		"assocId": "fayshongurl-20"
+	},
+
+	"util": {
+
+		"bitly_user": "zackproser", 
+		"bitly_key": "R_254f953fb3d6f5db628f683349ac25e5"
+	}, 
+
+	"timers": {
+
+		"retweetTimer": 2100000, 
+		"pruneInterval": 3600000, 
+		"favoriteTimer": 2730000
+	}
+}

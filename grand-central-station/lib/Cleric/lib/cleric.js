@@ -1,0 +1,282 @@
+var
+    exec = require('child_process').exec
+    , path = require('path')
+;
+
+/**
+ * MEDDDDDDDDDDIIIIIIIIIIIIIIIIIICCCCCCCCCCCCCCCCCCCCCCCCCCC
+ */
+class Cleric {
+    constructor() {
+        this.init()
+    }
+
+    init() {
+        this.gn_re = new RegExp('\{\"bot\"\:.+', 'g')
+        this.pid_re = new RegExp("\d{4,5}")
+    }
+
+    /**
+     * Checks avatar status by individual avatar name
+     *
+     * @param  {String}   avatar   The name of the avatar whose status to check
+     * @param  {Function} callback Function to run when checking is complete
+     */
+    checkAvatarByName(avatar, callback){
+        app.get('logger').info(`checkAvatarByName checking on  ${avatar}`)
+        this.getRunningAvatars((err, live_avatars) => {
+            if (err) {
+                app.get('logger').error('checkAvatarByName error')
+                callback(err)
+            }
+            callback(null, live_avatars.indexOf(avatar) !== -1)
+        })
+    }
+
+    /**
+     * Gets list of actually running avatars by parsing *nix processes
+     *
+     * @param  {Function} callback - Function run when processing fails or is finished
+     * @return {Object}   array - an array of running avatars: ['zorby3', 'fashiongerry', ...]
+     */
+    getRunningAvatars(callback) {
+        app.get('logger').info('Cleric checking running avatar processes...')
+        let pi = exec("ps -ef | grep good-neighbor-clustered/main.js", (err, stdout, stderr) => {
+            if (err) callback(err)
+            let matches = stdout.match(this.gn_re)
+            let live_avatars = []
+            if (matches == null) return callback(null, [])
+            matches.forEach((match) => {
+                try {
+                    let avatar = JSON.parse(match)
+                    live_avatars.push(avatar.bot.name)
+                } catch (ex) {
+                    callback(new Error('Error parsing running avatar process: ' + ex))
+                }
+            })
+            callback(null, live_avatars.unique())
+        })
+    }
+
+    /**
+     * Lookup avatar process by name
+     *
+     * @param  {[type]}   avatarName [description]
+     * @param  {Function} callback   [description]
+     */
+    getAvatarPidByName(avatarName, callback) {
+        app.get('logger').info(`Grand Central Station looking up ${avatarName} process ID`)
+        let pid_command = `pgrep -f ${avatarName}`
+        let pi = exec(pid_command, (err, stdout, stderr) => {
+            //I can see you...
+            let pid = stdout
+            if (pid === null || pid.length < 0) return callback(null, null)
+            pid = parseInt(pid, 10)
+            return callback(null, pid)
+        })
+    }
+
+    /**
+     * Kill a running avatar by process id
+     *
+     * "The only one that can do what I do is me. Lot of people had to die for me to be me. You wanna be me?"
+     *
+     * @param  {Integer}   pid      The process id of the avatar to be killed
+     * @param  {Function} callback  Function to run when the process is complete
+     */
+    killAvatarByPid(pid, callback) {
+        app.get('logger').info(`Grand Central Station killing ${pid}`)
+        let kill_command = 'kill -9 ' + pid //Pew pew
+        let pi = exec(kill_command, (err, stdout, stderr) => {
+            if (err) callback(err)
+            callback(null)
+        })
+    }
+
+    /**
+     * Ressurects each and every fallen avatar
+     *
+     * "Whitemane will continue to cast Mass Resurrection, so keep interrupting her!"
+     *
+     * @return {Array} - fallen_avatars - Array of avatars that should be running but aren't
+     */
+    recoverFallenAvatars(callback) {
+        app.get('logger').info('Cleric: detecting fallen avatars...')
+        this.getRunningAvatars((err, running) => {
+            if (err) callback(err)
+            app.get('avatars').find({ running: true }, { name: 1, _id: -1 }).toArray((err, shouldArray) => {
+                //Clean up should_array to contain names only
+                shouldArray = shouldArray.map(avatar => avatar.name)
+                let fallenAvatars = shouldArray.filter(avatar => running.indexOf(avatar) === -1)
+                if (fallenAvatars.length < 1) {
+                    app.get('logger').info('No fallen avatars detected at this time...')
+                    callback(null)
+                }
+                fallenAvatars.forEach((avatarToRecover) => {
+                /*   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                ~~~~~  ~~~ ~ ~|||||||~~~~~ ~~~~~~~~
+                      ~~~~    |||||||     ~~~~~~~~
+             ~~~~             |||E||| ~~~ ~~~ ~~ ~~~~
+                    ~~~~~   ~~|||T|||   ~~~~ ~~~~~~~
+                         ~  ~~||||||| ~~~~~~
+                            ~~|||L|||~~~      ~~
+                              |||U|||
+                              |||X|||
+                              |||||||
+                              |||P|||
+                              |||E|||
+                              |||R|||
+                              |||P|||
+                              |||E|||
+                              |||T|||
+                              |||U|||
+                              |||A|||
+                              |||||||
+                              |||L|||
+                              |||U|||
+                              |||C|||
+                              |||E|||
+                              |||A|||
+                              |||T|||
+                              |||||||
+                              |||E|||
+                              |||I|||
+                              |||S|||
+                              | ||| |
+                 `````````````|||||||````````````````
+                     \\\\\\\\\| ||| |/////////
+                      \\\\\\\\ >-)-O ////////
+                               `````           */
+                    this.startAvatarByName(avatarToRecover, (err, started) => {
+                        if (err) callback(err)
+                        if (started && started.status == "success") {
+                            app.get('logger').info(`Cleric succesfully auto-recovered ${avatarToRecover}`)
+                        }
+                    })
+                })
+                callback()
+            })
+        })
+    }
+
+    /**
+     * Starts an avatar by its name
+     *
+     * @param  {String}   avatarName - The name of the avatar to start
+     * @param  {Function} callback   - Function to run after startup process has run, or on error
+     */
+    startAvatarByName(avatarName, callback) {
+        this.getAvatarPidByName(avatarName, (pidErr, pid) => {
+            if (pidErr) {
+                app.get('logger').error(`startAvatarByName error looking up pid for ${avatarName}`)
+                callback(pidErr)
+            }
+            if (!isNaN(pid)) {
+                app.get('logger').error(`startAvatarByName received request for ${avatarName}, but they are already running`)
+                callback(null)
+            }
+            app.get('logger').info(`Starting avatar ${avatarName} by name...`)
+            app.get('avatars').findOne({ name: avatarName }, (err, avatar_document) => {
+
+                if (err) callback(err)
+
+                //Good Neighbor Codebase Expects only the contents of the Config Key:
+                let config_string = JSON.stringify(avatar_document.config)
+
+                let path_to_main = path.join(__dirname, '../../../../good-neighbor-clustered/main.js')
+
+                app.get('logger').info(`Grand Central Station now attempting to spawn: ${avatar_document.name}`)
+
+                /*
+                    Void! Until a skillful hand implants a fecund spark,
+                    as a whistling wanderer charges the darkness with their art.
+
+                    Summoners stamp silent sounds for hearers now and soon to see.
+                    They spell symphonic sorcery while sitting wordlessly.
+
+                    In conjuring up characters and placing them in heavens, hells,
+                    the ink-wand wielding word wizards are gods within themselves.
+                 */
+
+                //Here's looking at you, kid ^
+                var result = require('child_process').fork(path_to_main, [config_string], { env: process.env }) //Fork the avatar from the GN codebase and pass config string and environment variables object as arguments
+
+                app.get('logger').info(`Grand Central Station succsessfully spawned ${avatar_document.name}`)
+
+                console.dir(result)
+
+                callback(null, { status: "success" })
+            })
+        })
+    }
+
+    /**
+     * Stop an avatar by name
+     *
+     * @param  {String}   avatarName The name of the avatar to stop
+     * @param  {Function} callback   The function to run when stopping process is complete
+     */
+    stopAvatarByName(avatarName, callback) {
+        this.getAvatarPidByName(avatarName, (err, pid) => {
+            if (err) {
+                app.get('logger').error(`stopAvatarByName: error getting avatar ${avatarName} pid`)
+                callback(err)
+            }
+
+            if (pid === null) {
+                app.get('logger').info(`stopAvatarByName was requested on ${avatarName} but avatar is not running`)
+                callback(null, { status: "success" })
+            }
+
+            this.killAvatarByPid(pid, (err) => {
+                if (err) app.get('logger').error(`Grand Central Station: error killing ${pid}`)
+                app.get('logger').info(`Grand Central Station: killed ${avatarName}`)
+
+                callback(null, { status: "success" })
+            })
+
+        })
+    }
+
+    /**
+     * Updates an avatar's running status by name
+     *
+     * @param  {String}   avatarName The name of the avatar to update
+     * @param  {Object}   status     The new running status of the avatar
+     * @param  {Function} callback   Function to run when the updating process is complete, or on error
+     */
+    modifyAvatarRunningStatusByName(avatarName, status, callback) {
+        app.get('logger').info(`modifyAvatarRunningStatusByName updating ${avatarName} running status to ${status}`)
+
+        app.get('avatars').update({ name: avatarName }, { $set: { running: status } }, (err, done) => {
+            if (err) callback(err)
+
+            app.get('logger').info(`modifyAvatarRunningStatusByName succeeded in updating ${avatarName} running status to ${status}`)
+
+            if (false === status) {
+
+                this.stopAvatarByName(avatarName, (err, done) => {
+                    if (err) app.get('logger').error(err)
+                    if (done && done.status == "success") {
+                        app.get('logger').info(`modifyAvatarRunningStatusByName: succeeded in stopping ${avatarName}`)
+                        console.log('wikka')
+                        callback(null, { status: "success" })
+                    }
+                })
+
+            } else if (true === status) {
+
+                this.startAvatarByName(avatarName, (err, done) => {
+                    if (err) app.get('logger').error(err)
+                    if (done && done.status == "success") {
+                        console.log('wakka')
+                        app.get('logger').info(`modifyAvatarRunningStatusByName: succeeded in starting ${avatarName}`)
+                        callback(null, { status: "success" })
+                    }
+                })
+            }
+        })
+    }
+}
+
+module.exports = Cleric

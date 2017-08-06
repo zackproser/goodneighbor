@@ -1,0 +1,36 @@
+{
+  "name": "grand-central-station",
+  "version": "1.0.0",
+  "description": "The admin management interface for good neighbor",
+  "main": "grand-central-station.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://zackproser@bitbucket.org/zackproser/grand-central-station.git"
+  },
+  "keywords": [
+    "good",
+    "neighbor"
+  ],
+  "author": "Zack Proser <zackproser@gmail.com> (http://www.zackproser.com/)",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/zackproser/grand-central-station#readme",
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "bootstrap-vue": "^0.16.1",
+    "bootswatch": "^3.3.7",
+    "colors": "^1.1.2",
+    "express": "^4.13.3",
+    "express-hbs": "^0.8.4",
+    "http-auth": "^2.2.8",
+    "ip": "^1.1.0",
+    "log4js": "^0.6.29",
+    "mongodb": "2.2.30",
+    "pm2": "^2.4.6",
+    "request": "^2.67.0",
+    "rollbar": "^2.0.1",
+    "xhr": "^2.4.0"
+  }
+}

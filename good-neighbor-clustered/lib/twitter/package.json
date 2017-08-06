@@ -1,0 +1,64 @@
+{
+  "name": "twitter",
+  "version": "0.2.13",
+  "description": "Twitter API client library for node.js",
+  "keywords": [
+    "twitter",
+    "streaming",
+    "oauth"
+  ],
+  "homepage": "https://github.com/desmondmorris/node-twitter",
+  "author": {
+    "name": "jdub, changes by desmondmorris"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/desmondmorris/node-twitter/raw/master/LICENSE"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/desmondmorris/node-twitter.git"
+  },
+  "dependencies": {
+    "cookies": ">=0.1.6",
+    "deep-extend": "^0.4.0",
+    "keygrip": ">=0.1.7",
+    "oauth": ">=0.8.4"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-release": "~0.6.0"
+  },
+  "engines": [
+    "node >=0.2.0"
+  ],
+  "main": "./lib/twitter",
+  "gitHead": "32a2182119efe3f719bbe7fac774d5d81de3cc94",
+  "bugs": {
+    "url": "https://github.com/desmondmorris/node-twitter/issues"
+  },
+  "_id": "twitter@0.2.13",
+  "scripts": {},
+  "_shasum": "29cc01995f5a415f7d5f782e2c6a36b8200cb38c",
+  "_from": "twitter@>=0.2.13 <0.3.0",
+  "_npmVersion": "1.4.21",
+  "_npmUser": {
+    "name": "desmondmorris",
+    "email": "hi@desmondmorris.com"
+  },
+  "maintainers": [
+    {
+      "name": "desmondmorris",
+      "email": "hi@desmondmorris.com"
+    }
+  ],
+  "dist": {
+    "shasum": "29cc01995f5a415f7d5f782e2c6a36b8200cb38c",
+    "tarball": "http://registry.npmjs.org/twitter/-/twitter-0.2.13.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/twitter/-/twitter-0.2.13.tgz",
+  "readme": "ERROR: No README data found!"
+}
