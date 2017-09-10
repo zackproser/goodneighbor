@@ -34,6 +34,21 @@ If you just want to build and run the provided images, you only need Docker. If 
 
 ## Set Up
 
+There is an install.sh script included in the root of the project to facilitate getting up and running quickly. This script will:
+
+* Ensure you have the software required to run Goodneighbor installed
+* Load the Goodneighbor production data into your local mongo instance
+* Give you hints as to the next steps you should take to get a full production instance running
+
+
+**N.B: This is free software that I am not providing support for.** If you want to get it running at scale in production you will need to invest some time into figuring out how it works. Please don't waste your time opening issues requesting assistance with configuration and setup because I will ignore and close them.
+
+If you have a problem with this, please feel free to find another open-source Twitter automation platform and use that instead.
+
+### Use Docker Compose
+
+**The Docker compose method is only provided as a means for making it easier to see how the components fit together.** Do not attempt to use this for running a Goodneighbor instance in production because it won't work.
+
 ```
 $ git clone https://github.com/zackproser/goodneighbor
 $ cd goodneighbor
@@ -47,6 +62,14 @@ The goodneighbor-db image is a mongo image containing a dump of production data 
 The Docker compose file is provided as a convenience for seeing how the project works and getting up and running with it quickly.
 
 If you are going to run this in production, I recommend configuring Grand Central Station as a service managed by systemctl, pm2, etc.
+
+### Running in production
+
+* Load the provided production data into your mongo database
+* Run grand-central-station.js, correctly passing all required environment variables (look at the Dockerfile)
+* Use the admin UI
+* Re-configure all running avatars with your own data / settings
+* Leave me alone
 
 ### Contribution guidelines ###
 
