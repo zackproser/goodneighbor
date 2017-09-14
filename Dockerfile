@@ -17,7 +17,7 @@ ADD grand-central-station/ grand-central-station/
 
 RUN cd grand-central-station && npm i
 
-RUN cd grand-central-station/goodneighbor-admin-ui/ && npm run build
+RUN cd grand-central-station/goodneighbor-admin-ui/ && npm i && npm run build
 
 RUN cp -r grand-central-station/goodneighbor-admin-ui/dist grand-central-station/dist
 
